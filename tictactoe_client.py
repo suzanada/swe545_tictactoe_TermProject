@@ -1,28 +1,34 @@
 import xmlrpclib
 
 p = xmlrpclib.ServerProxy("http://localhost:8000")
-print p.addCounter()
-print p.startGame()
-print "Your clinet ID is: ", p.getCounter()
-print p.printBoard()
+p.setSessionID()
+print str(p.generateClientID())
+print p.getCounter()
+sessionID = p.getCounter()
 
-while p.getGameStatus() == str(0):
+print p.startGame()
+print "Your client ID is: ", p.getCounter()
+
+print p.printBoard(sessionID)
+while p.getGameStatus(sessionID) == str(0):
     try:
         userInput = str(raw_input("Please write a number between 0-8"))
-        if p.checkValidMove(userInput):
-            p.movePlayer(userInput)
+        if p.checkValidMove(sessionID,userInput):
+            p.movePlayer(sessionID,userInput)
             print "Your Move______________"
-            print p.printBoard()
-            if p.checkWinner():
-                uinput = str(raw_input(p.strGameStatus()))
-                p.endOrRestartGame(uinput)
+            print p.printBoard(sessionID)
+            if p.checkWinner(sessionID):
+                uinput = str(raw_input(p.strGameStatus(sessionID)))
+                p.endOrRestartGame(sessionID,uinput)
+                print p.printBoard(sessionID)
             else:
-                p.checkMove()
+                p.checkMove(sessionID)
                 print "Computer's Move______________"
-                print p.printBoard()
-                if p.checkWinner():
-                    uinput = str(raw_input(p.strGameStatus()))
-                    p.endOrRestartGame(uinput)
+                print p.printBoard(sessionID)
+                if p.checkWinner(sessionID):
+                    uinput = str(raw_input(p.strGameStatus(sessionID)))
+                    p.endOrRestartGame(sessionID,uinput)
+                    print p.printBoard(sessionID)
                 else:
                     continue
         else:
