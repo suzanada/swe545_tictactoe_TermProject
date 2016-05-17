@@ -5,6 +5,7 @@ import sys
 import socket
 from SocketServer import ThreadingMixIn
 import Game
+import uuid
 
 server = SimpleXMLRPCServer(("localhost",8000),allow_none=True)
 counter = 0
@@ -12,6 +13,13 @@ def addCounter():
     global counter
     counter+=1
     return counter
+
+class tictactoe_server(ThreadingMixIn, SimpleXMLRPCServer):
+    pass
+#def sessionIDGenerator():
+
+
+
 
 class Parser():
     def __init__(self):
