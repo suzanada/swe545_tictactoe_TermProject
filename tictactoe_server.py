@@ -6,26 +6,19 @@ import socket
 from SocketServer import ThreadingMixIn
 import Game
 
-class ThreadedXMLRPCServer(ThreadingMixIn,SimpleXMLRPCServer):
-    pass
-class RequestHandler(SimpleXMLRPCRequestHandler):
-    rpc_paths = ('/RPC2',)
-
-server = ThreadedXMLRPCServer(("localhost",8000),allow_none=True)
+server = SimpleXMLRPCServer(("localhost",8000),allow_none=True)
 counter = 0
 def addCounter():
     global counter
     counter+=1
     return counter
 
-
 class Parser():
     def __init__(self):
-        self.sessionID = counter
         self.clientDict = {}
 
-    def startGame(self):
-        return self.clientDict[str(self.sessionID)].print_start_board()
+    def startGame(self,sessionID):
+        return self.clientDict[str(sessionID)].print_start_board()
 
     def printBoard(self,sessionID):
         return self.clientDict[str(sessionID)].print_array_to_board()
@@ -34,17 +27,10 @@ class Parser():
         return str(self.clientDict[str(sessionID)].gameStatus)
 
     def checkMove(self,sessionID):
-        self.clientDict[str(sessionID)].check_move()
+        self.clientDict[str(sessionID)].check_moves()
 
-    def checkWinner(self,sessionID):
-        self.clientDict[str(sessionID)].checkWinner()
-
-    def getCounter(self):
-        return str(self.sessionID)
-
-    def setSessionID(self):
-        self.sessionID = counter
-        self.clientDict[str(self.sessionID)] = Game.Game(self.sessionID)
+    def setSessionID(self,sessionID):
+        self.clientDict[str(sessionID)] = Game.Game(sessionID)
 
     def checkValidMove(self,sessionID,playerCell):
         return self.clientDict[str(sessionID)].validityCheck(playerCell)
@@ -55,17 +41,12 @@ class Parser():
     def checkWinner(self,sessionID):
         return self.clientDict[str(sessionID)].checkWinner()
 
-    def checkMove(self,sessionID):
-        self.clientDict[str(sessionID)].check_moves()
-
     def strGameStatus(self,sessionID):
         return self.clientDict[str(sessionID)].strGameStatus()
 
     def endOrRestartGame(self,sessionID,uinput):
         return self.clientDict[str(sessionID)].endOrRestartGame(uinput)
-
-
-
+    #def removeSession(self):
 
 
 
@@ -76,3 +57,4 @@ server.register_instance(Parser())
 server.serve_forever()
 while True:
     server.handle_request()
+
