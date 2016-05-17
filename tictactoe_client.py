@@ -29,6 +29,7 @@ while p.getGameStatus(sessionID) == str(0):
                         p.endOrRestartGame(sessionID,uinput)
                         print p.printBoard(sessionID)
                     else:
+                        p.removeSession(sessionID)
                         print "Your answer was late. If you want to play, please start again."
                         break
 
@@ -44,6 +45,7 @@ while p.getGameStatus(sessionID) == str(0):
                             p.endOrRestartGame(sessionID,uinput)
                             print p.printBoard(sessionID)
                         else:
+                            p.removeSession(sessionID)
                             print "Your answer was late. If you want to play, please start again."
                             break
                     else:
@@ -51,6 +53,7 @@ while p.getGameStatus(sessionID) == str(0):
             else:
                 print "Please try again invalid move"
         else:
+            p.removeSession(sessionID)
             print "YOU LOST! Your answer was late. If you want to play, please start again."
             break
     except:

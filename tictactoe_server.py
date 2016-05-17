@@ -54,7 +54,10 @@ class Parser():
 
     def endOrRestartGame(self,sessionID,uinput):
         return self.clientDict[str(sessionID)].endOrRestartGame(uinput)
-    #def removeSession(self):
+
+    def removeSession(self,sessionID):
+        del self.clientDict[str(sessionID)]
+        print self.clientDict
 
 
 
