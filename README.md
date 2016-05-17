@@ -1,4 +1,3 @@
-# swe545_tictactoe_TermProject
 
 
 
@@ -42,12 +41,9 @@ INTRODUCTION
 
 This is a design document of a multi-client Tic-Tac-Toe game written in Python by the XML-RPC library. The primary requirement of the game is to allow multiple clients to access the server and play tictactoe with the computer simultaneously. In order to satisfy this requirement division of the  engine, server and client structure was necessary. Therefore 3 python files should be created at the start one being Game.py and the others being tictactoe_client.py, tictactoe_server.py. 
 
-First task should be designing the TicTacToe engine. Because this is an XML-RPC Server and Client engine extra attention should be given to not using print or raw_input statements. Input from the user will be considered as arguments to the TicTacToe function. Subsequently a parser should be designed in the server for the Game.py engine, to create TicTacToe session instances and implementing XML-RPC methods.
+First task should be designing the TicTacToe engine. Because this is an XML-RPC Server and Client engine extra attention should be given to using proper statements. Input from the user will be considered as arguments to the TicTacToe function. Subsequently a parser should be designed in the server for the Game.py engine, to create TicTacToe session instances and implementing XML-RPC methods.I designed the TicTacToe engine and make sure the computer starts at the corners in order to increase the computer’s chance of winning.
 
 After making sure that the engine, client and server work fluently as a coherent structure we will be tackling the issue of optimising server architecture to handle multiple clients simultaneously.
-
-
-
 
 XML-RPC API DOCUMENTATION
 
@@ -59,9 +55,6 @@ class Parser():
         self.clientDict = {}
 
 Above function shows the initialisation of the Parser class. As soon as the instance is created an empty Client Dictionary is created also. Each time a client generates a Client ID and starts a game a new game instance will be added to this dictionary. The value part of each dictionary element is a Game instance whereas the key is the unique sessionID generated.Below functions are all methods of the above class.This part will not be used in the Client side. This is here for explanatory purposes.
-
-
-
 
 
     def setSessionID(self,sessionID):
@@ -112,6 +105,7 @@ This function takes the unique sessionID as the first and the input character of
     def removeSession(self,sessionID):
 This function takes sessionID as the argument and removes the Game instance from the dictionary so that the games that have ended or quitted are removed.
         
+
 HANDLING MULTIPLE GAMES SIMULTANEOUSLY
 
 In order to handle multiple games an empty dictionary is initialised when the Parser class is registered as an instance. There is a static counter in the server which increases by 1 each time a client tries to play with it by the generateClientID function. Therefore each time a client requests to play a game a Game instance is initialised with that generated Client ID (increased counter number in the server) and added to the clientDict{} in the server. Subsequently functions that are implemented from the client are implemented on the clientDict element corresponding to that sessionID. Because this is a quick game where small data transfer occurs no extra thread is used in the process and each client gets its response nearly simultaneously. In addition when if the client hasn’t responded for 5 minutes server side automatically disconnects the client and removes the Game instance which corresponds to that sessionID from the clientDict. Again the exited clients are removed from the Server to prevent unnecessary memory usage.		
@@ -120,3 +114,6 @@ The key data structures used in this project are strings, boolean, integers, arr
 
 If the Client doesn’t respond for more than 5 minutes we assume that the client lost interest in the game or better couldn’t come up with an answer in that limited time. In this case the client is told that he/she has lost and the connection is automatically shut down.
 
+CONCLUSION
+
+Some minor bug fixes are made and a timer is added to illustrate a more entertaining game and get rid of unneccessary load on server.  This project gave me a better understanding of Python, client–server architecture and distributed systems after applying the cumulation of knowledge I gathered from research and examples. 
