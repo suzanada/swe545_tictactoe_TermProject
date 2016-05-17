@@ -112,57 +112,6 @@ This function takes the unique sessionID as the first and the input character of
     def removeSession(self,sessionID):
 This function takes sessionID as the argument and removes the Game instance from the dictionary so that the games that have ended or quitted are removed.
         
-
-
-
-
-
-
-
-MESSAGE FLOW SCENARIO
-
-                                                                Client
-Server					
-				generateClientID()
-			               sessionID
-				startGame(sessionID)
-				
-				initialGameString
-				
-				printBoard(sessionID)
-			
-				currentBoardString
-
-				getGameStatus(sessionID)
-
-				gameStatusString
-
-				checkValidMove(sessionID,userInput)
-				
-				validityBool
-
-				movePlayer(sessionID,userInput)
-					
-					printBoard(sessionID)
-					
-					currentBoardString
-
-					checkWinner(sessionID)
-
-					ifGameEndedBool
-
-					strGameStatus(sessionID)
-
-					strGameEndQuestionString
-
-			endOrRestartGame(sessionID,uinput)
-
-					printBoard(sessionID)
-
-					currentBoardString
-
-					
-
 HANDLING MULTIPLE GAMES SIMULTANEOUSLY
 
 In order to handle multiple games an empty dictionary is initialised when the Parser class is registered as an instance. There is a static counter in the server which increases by 1 each time a client tries to play with it by the generateClientID function. Therefore each time a client requests to play a game a Game instance is initialised with that generated Client ID (increased counter number in the server) and added to the clientDict{} in the server. Subsequently functions that are implemented from the client are implemented on the clientDict element corresponding to that sessionID. Because this is a quick game where small data transfer occurs no extra thread is used in the process and each client gets its response nearly simultaneously. In addition when if the client hasn’t responded for 5 minutes server side automatically disconnects the client and removes the Game instance which corresponds to that sessionID from the clientDict. Again the exited clients are removed from the Server to prevent unnecessary memory usage.		
